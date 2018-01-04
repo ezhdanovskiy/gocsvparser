@@ -10,17 +10,21 @@ import (
 	"github.com/ezhdanovskiy/gocsvparser/ui"
 )
 
-func Run() error {
-	address := "127.0.0.1:7878"
-	log.Printf("Starting, HTTP on: %s\n", address)
+type Config struct {
+	ListenSpec string
+	UI         ui.Config
+}
 
-	l, err := net.Listen("tcp", address)
+func Run(cfg *Config) error {
+	log.Printf("Starting, HTTP on: %s\n", cfg.ListenSpec)
+
+	l, err := net.Listen("tcp", cfg.ListenSpec)
 	if err != nil {
 		log.Printf("Error creating listener: %v\n", err)
 		return err
 	}
 
-	ui.Start(l)
+	ui.Start(cfg.UI, l)
 
 	waitForSignal()
 
