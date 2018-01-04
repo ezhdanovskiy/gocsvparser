@@ -7,11 +7,14 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/ezhdanovskiy/gocsvparser/db"
+	"github.com/ezhdanovskiy/gocsvparser/model"
 	"github.com/ezhdanovskiy/gocsvparser/ui"
 )
 
 type Config struct {
 	ListenSpec string
+	Db         db.Config
 	UI         ui.Config
 }
 
@@ -24,7 +27,15 @@ func Run(cfg *Config) error {
 		return err
 	}
 
-	ui.Start(cfg.UI, l)
+	db, err := db.InitDb(cfg.Db)
+	if err != nil {
+		log.Printf("Error initializing database: %v\n", err)
+		return err
+	}
+
+	m := model.New(db)
+
+	ui.Start(cfg.UI, m, l)
 
 	waitForSignal()
 

@@ -13,6 +13,7 @@ func main() {
 
 	cfg := &daemon.Config{}
 	cfg.ListenSpec = "localhost:3000"
+	cfg.Db.FilePath = "dictionary.csv"
 	cfg.UI.Assets = http.Dir("/Users/evgenii.zhdanovskiy/go/src/github.com/ezhdanovskiy/gocsvparser/assets/")
 
 	if err := daemon.Run(cfg); err != nil {
