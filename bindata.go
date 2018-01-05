@@ -3,8 +3,6 @@
 // assets/js/app.jsx
 // DO NOT EDIT!
 
-// +build builtinassets
-
 package main
 
 import (
