@@ -13,7 +13,7 @@ func main() {
 
 	cfg := &daemon.Config{}
 	cfg.ListenSpec = "localhost:3000"
-	cfg.Db.FilePath = "dictionary.csv"
+	cfg.Db.FilePath = "/Users/evgenii.zhdanovskiy/go/src/bitbucket.org/ezhdanovskiy/csvparser.go/data/dictionary.csv"
 
 	log.Printf("Running with builtin assets.\n")
 	cfg.UI.Assets = &assetfs.AssetFS{

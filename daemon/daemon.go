@@ -40,11 +40,9 @@ func Run(cfg *Config) error {
 
 	ui.Start(cfg.UI, m, l)
 
-	url := "http://" + cfg.ListenSpec
-	log.Printf("Open %s\n", url)
-	err = openBrowser(url)
+	err = openBrowser("http://" + cfg.ListenSpec)
 	if err != nil {
-		log.Printf("Error open %s: %v\n", url, err)
+		log.Printf("Error open '%s': %v\n", cfg.ListenSpec, err)
 		return err
 	}
 
@@ -61,8 +59,9 @@ func waitForSignal() {
 }
 
 func openBrowser(url string) error {
+	return nil
 	var err error
-
+	log.Printf("Open %s\n", url)
 	switch runtime.GOOS {
 	case "linux":
 		err = exec.Command("xdg-open", url).Start()

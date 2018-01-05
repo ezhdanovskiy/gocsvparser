@@ -3,6 +3,7 @@ package ui
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net"
 	"net/http"
 	"time"
@@ -22,6 +23,7 @@ func Start(cfg Config, m *model.Model, listener net.Listener) {
 
 	http.Handle("/", indexHandler())
 	http.Handle("/people", peopleHandler(m))
+	http.Handle("/dictionary", dictionaryHandler(m))
 	http.Handle("/js/", http.FileServer(cfg.Assets))
 
 	go server.Serve(listener)
@@ -38,7 +40,7 @@ const indexHTML = `
 <!DOCTYPE HTML>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="windows-1251">
     <title>Simple Go Web App</title>
   </head>
   <body>
@@ -60,6 +62,7 @@ func indexHandler() http.Handler {
 
 func peopleHandler(m *model.Model) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("peopleHandler")
 		people, err := m.People()
 		if err != nil {
 			http.Error(w, "This is an error", http.StatusBadRequest)
@@ -67,6 +70,25 @@ func peopleHandler(m *model.Model) http.Handler {
 		}
 
 		js, err := json.Marshal(people)
+		if err != nil {
+			http.Error(w, "This is an error", http.StatusBadRequest)
+			return
+		}
+
+		fmt.Fprintf(w, string(js))
+	})
+}
+
+func dictionaryHandler(m *model.Model) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("dictionaryHandler")
+		dictionary, err := m.Dictionary()
+		if err != nil {
+			http.Error(w, "This is an error", http.StatusBadRequest)
+			return
+		}
+
+		js, err := json.Marshal(dictionary)
 		if err != nil {
 			http.Error(w, "This is an error", http.StatusBadRequest)
 			return
