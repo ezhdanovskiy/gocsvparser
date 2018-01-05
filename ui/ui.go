@@ -3,7 +3,6 @@ package ui
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net"
 	"net/http"
 	"time"
@@ -23,7 +22,6 @@ func Start(cfg Config, m *model.Model, listener net.Listener) {
 
 	http.Handle("/", indexHandler())
 	http.Handle("/people", peopleHandler(m))
-	log.Printf("Handle /js/ as dir '%s'\n", cfg.Assets)
 	http.Handle("/js/", http.FileServer(cfg.Assets))
 
 	go server.Serve(listener)
