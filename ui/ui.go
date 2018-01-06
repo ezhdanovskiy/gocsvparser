@@ -22,7 +22,6 @@ func Start(cfg Config, m *model.Model, listener net.Listener) {
 		MaxHeaderBytes: 1 << 16}
 
 	http.Handle("/", indexHandler())
-	http.Handle("/people", peopleHandler(m))
 	http.Handle("/dictionary", dictionaryHandler(m))
 	http.Handle("/js/", http.FileServer(cfg.Assets))
 
@@ -57,25 +56,6 @@ const indexHTML = `
 func indexHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, indexHTML)
-	})
-}
-
-func peopleHandler(m *model.Model) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("peopleHandler")
-		people, err := m.People()
-		if err != nil {
-			http.Error(w, "This is an error", http.StatusBadRequest)
-			return
-		}
-
-		js, err := json.Marshal(people)
-		if err != nil {
-			http.Error(w, "This is an error", http.StatusBadRequest)
-			return
-		}
-
-		fmt.Fprintf(w, string(js))
 	})
 }
 

@@ -31,14 +31,6 @@ type csvDb struct {
 	dict     []*model.DictionaryItem
 }
 
-func (d *csvDb) SelectPeople() ([]*model.Person, error) {
-	people := make([]*model.Person, 0)
-	people = append(people,
-		&model.Person{Id: 1, First: "fffff1", Last: "lllll1"},
-		&model.Person{Id: 2, First: "fffff2", Last: "lllll2"})
-	return people, nil
-}
-
 func (d *csvDb) GetDictionariItems() ([]*model.DictionaryItem, error) {
 	return d.dict, nil
 }
