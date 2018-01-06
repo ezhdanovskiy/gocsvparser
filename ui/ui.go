@@ -40,8 +40,8 @@ const indexHTML = `
 <!DOCTYPE HTML>
 <html>
   <head>
-    <meta charset="windows-1251">
-    <title>Simple Go Web App</title>
+    <meta charset="utf-8">
+    <title>Dictionary</title>
   </head>
   <body>
     <div id='root'></div>

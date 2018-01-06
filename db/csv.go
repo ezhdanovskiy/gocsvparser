@@ -6,10 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
-	"strings"
 
 	"golang.org/x/text/encoding/charmap"
 	"golang.org/x/text/transform"
@@ -47,7 +45,7 @@ func (d *csvDb) GetDictionariItems() ([]*model.DictionaryItem, error) {
 
 func (d *csvDb) readDictionary() {
 	csvFile, _ := os.Open(d.FilePath)
-	reader := csv.NewReader(bufio.NewReader(csvFile))
+	reader := csv.NewReader(transform.NewReader(bufio.NewReader(csvFile), charmap.Windows1251.NewDecoder()))
 	for {
 		line, error := reader.Read()
 		if error == io.EOF {
@@ -64,15 +62,4 @@ func (d *csvDb) readDictionary() {
 	}
 	dictJson, _ := json.Marshal(d.dict)
 	fmt.Println(string(dictJson))
-}
-
-func decodeString(s string) string {
-	sr := strings.NewReader(s)
-	tr := transform.NewReader(sr, charmap.Windows1251.NewDecoder())
-	buf, err := ioutil.ReadAll(tr)
-	if err != nil {
-		log.Println(err)
-		return s
-	}
-	return string(buf)
 }
